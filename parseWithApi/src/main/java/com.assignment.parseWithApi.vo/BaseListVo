@@ -1,0 +1,59 @@
+package com.assignment.parseWithApi.vo;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class BaseListVo {
+
+	@JsonProperty("dcls_month")
+    private String dclsMonth;				// 공시제출월 YYYMM
+    
+//    @JsonProperty("fin_co_no")
+//    private String finCoNo;				// 금융회사 코드
+    
+//    @JsonProperty("fin_prdt_cd")
+//    private String finPrdtCd;				// 금융상품 코드
+    
+    @JsonProperty("kor_co_nm")
+    private String korCoNm;					// 금융회사명
+    
+    @JsonProperty("fin_prdt_nm")
+    private String finPrdtNm;				// 금융상품명
+    
+    @JsonProperty("join_way")
+    private String joinWay;					// 가입방법
+    
+    @JsonProperty("mtrt_int")
+    private String mtrtInt;					// 만기후 이자율
+    
+    @JsonProperty("spcl_cnd")
+    private String spclCnd;					// 우대조건
+    
+    @JsonProperty("join_deny")
+    private String joinDeny;				// 가입제한
+    
+    @JsonProperty("join_member")
+    private String joinMember;				// 가입대상
+    
+    @JsonProperty("etc_note")
+    private String etcNote;					// 기타 유의사항
+    
+//    @JsonProperty("max_limit")
+//    private String maxLimit;				// 최고한도
+    
+//    @JsonProperty("dcls_strt_day")
+//    private String dclsStrtDay;			// 공시 시작일
+    
+//    @JsonProperty("dcls_end_day")
+//    private String dclsEndDay;			// 공시 종료일
+    
+//    @JsonProperty("fin_co_subm_day")
+//    private String finCoSubmDay;			// 금융회사 제출일
+    
+}

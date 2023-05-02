@@ -1,0 +1,40 @@
+package com.assignment.parseWithApi.vo;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class ResultVo {
+
+//	 @JsonProperty("prdt_div")
+//	 private String prdtDiv;						 // ?
+    
+    @JsonProperty("total_count")
+    private String totalCount;						// 총 상품건수
+    
+    @JsonProperty("max_page_no")
+    private String maxPageNo;						// 총 페이지 건수 (총페이지건수=총상품건수/1회조회개수)
+    
+    @JsonProperty("now_page_no")
+    private String nowPageNo;						// 현재 조회 페이지 번호
+    
+    @JsonProperty("err_cd")
+    private String errCd;							// 응답코드
+    
+//    @JsonProperty("err_msg")
+//    private String errMsg;						// 응답메시지
+    
+    @JsonProperty("baseList")
+    private List<BaseListVo> baseList;				// BaseListVo
+    
+    @JsonProperty("optionList")
+    private List<OptionListVo> optionList;			// OptionListVo
+    
+}

@@ -1,0 +1,14 @@
+package com.assignment.parseWithApi.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.assignment.parseWithApi.service.ApiService;
+
+@RestController
+public class ApiController {
+	
+	@Autowired
+	private ApiService apiService;
+
+}

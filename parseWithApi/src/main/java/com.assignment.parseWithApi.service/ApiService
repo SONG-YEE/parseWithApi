@@ -1,52 +1,107 @@
 package com.assignment.parseWithApi.service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-
-import javax.net.ssl.HttpsURLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
+
+import com.assignment.parseWithApi.vo.ResultVo;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ApiService {
 	
-	public String 				targetUrl 		=	 "http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json";
-	public String   			authKey 		= 	 "276dd7404eab954cd893284d19131536";
-	public InputStream  		inputStream 	= 	 null;
-	public BufferedReader		reader 			= 	 null;
-	public HttpsURLConnection 	conn 			= 	 null;
 	
-	
-	public void HttpsUrlConnGet(String targetUrl) {
+	public List<ResultVo> getResult(String rqstURL) throws IOException {
+		
+		List<ResultVo> resultList = new ArrayList<>();
+
+		HttpURLConnection 	conn 			= 	 null;
+		InputStream  		inputStream 	= 	 null;
+		BufferedReader		reader 			= 	 null;
 		
 		try {
-			URL url = new URL(targetUrl);
-			HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-			conn.getInputStream();
+			
+			URL url = new URL(rqstURL);
+			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			
-			conn.setConnectTimeout(1000);
-			conn.setReadTimeout(1000);
+			conn.setConnectTimeout(10000);
+			conn.setReadTimeout(10000);
 			
 			int responseCode = conn.getResponseCode();
-			System.out.print("응답코드 : " + responseCode + "\n" + ""
-							+ "응답메시지 : " + conn.getResponseMessage());
-			
-			
-			if(responseCode == HttpsURLConnection.HTTP_OK) {
-				inputStream = conn.getInputStream();
-			} else {
-				inputStream = conn.getErrorStream();
+			System.out.print("응답코드 : " + responseCode + "\n" + "" +
+							 "응답메시지 : " + conn.getResponseMessage());
+			if(responseCode != HttpURLConnection.HTTP_OK) {
+				
+				throw new RuntimeException("HTTP 에러코드 : " + conn.getResponseCode());
+				
 			}
-		} catch (Exception e) {
+				
+//			if(conn instanceof HttpURLConnection) {
+//				System.out.println("가능");
+//			} else { System.out.println("불가능"); }
+
+			inputStream = conn.getInputStream();
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder responseBuilder = new StringBuilder();
+            String line;
+            while(  (line = reader.readLine()) != null  ) {
+            	
+                responseBuilder.append(line);
+            }
+			String responseJson = responseBuilder.toString();
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			JsonNode rootNode = objectMapper.readTree(responseJson);
+			JsonNode resultNode = rootNode.path("result");
+			if(resultNode.isArray()) {
+				for(JsonNode node : resultNode) {
+					ResultVo resultVo = objectMapper.treeToValue(node, ResultVo.class);
+					resultList.add(resultVo);
+				}
+			}
+			
+//			// 받아온 JSON 데이터를 Java 객체로 매핑하는 코드
+//			ObjectMapper objectMapper = new ObjectMapper();
+//			ResultVo resultVo = objectMapper.readValue(responseJson, ResultVo.class);
+//
+//			// 매핑된 Java 객체를 리스트에 추가
+//			resultList.add(resultVo);
+			
+		} catch(Exception e) {
+			
+			e.printStackTrace();
 			System.out.println("error : " + e);
+			
 		} finally {
+			if(reader != null) {
+				
+                reader.close();
+                
+            }
+			
+			if(inputStream != null) {
+			
+				inputStream.close();
+			
+			}
+			
 			if(conn != null) {
+			
 				conn.disconnect();
+			
 			}
 		}
+		
+		return resultList;
 	}
 	
-
 }

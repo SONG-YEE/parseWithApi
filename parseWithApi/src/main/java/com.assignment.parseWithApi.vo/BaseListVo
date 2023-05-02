@@ -12,13 +12,13 @@ import lombok.ToString;
 public class BaseListVo {
 
 	@JsonProperty("dcls_month")
-    private String dclsMonth;				// 공시제출월 YYYMM
+    private int dclsMonth;					// 공시제출월 YYYMM
     
 //    @JsonProperty("fin_co_no")
 //    private String finCoNo;				// 금융회사 코드
     
-//    @JsonProperty("fin_prdt_cd")
-//    private String finPrdtCd;				// 금융상품 코드
+    @JsonProperty("fin_prdt_cd")
+    private int finPrdtCd;					// 금융상품 코드
     
     @JsonProperty("kor_co_nm")
     private String korCoNm;					// 금융회사명

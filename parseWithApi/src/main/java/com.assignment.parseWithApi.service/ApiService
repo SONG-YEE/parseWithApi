@@ -11,7 +11,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.assignment.parseWithApi.vo.OptionListVo;
 import com.assignment.parseWithApi.vo.ResultVo;
+import com.assignment.parseWithApi.vo.RootVo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -19,9 +21,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class ApiService {
 	
 	
-	public List<ResultVo> getResult(String rqstURL) throws IOException {
+	public List<RootVo> getResult(String rqstURL) throws IOException {
 		
-		List<ResultVo> resultList = new ArrayList<>();
+		List<RootVo> 		resultList 		=	 new ArrayList<>();
 
 		HttpURLConnection 	conn 			= 	 null;
 		InputStream  		inputStream 	= 	 null;
@@ -37,8 +39,8 @@ public class ApiService {
 			conn.setReadTimeout(10000);
 			
 			int responseCode = conn.getResponseCode();
-			System.out.print("응답코드 : " + responseCode + "\n" + "" +
-							 "응답메시지 : " + conn.getResponseMessage());
+			System.out.print("응답코드 : " + responseCode + "\n" +
+							 "응답메시지 : " + conn.getResponseMessage() + "\n");
 			if(responseCode != HttpURLConnection.HTTP_OK) {
 				
 				throw new RuntimeException("HTTP 에러코드 : " + conn.getResponseCode());
@@ -52,29 +54,32 @@ public class ApiService {
 			inputStream = conn.getInputStream();
             reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder responseBuilder = new StringBuilder();
-            String line;
+            String line = "";
+//            String result = "";
             while(  (line = reader.readLine()) != null  ) {
-            	
+//            	result = result.concat(line);
+//            	System.out.println("result : \n" + result);
                 responseBuilder.append(line);
             }
 			String responseJson = responseBuilder.toString();
+			System.out.println("responseJson : \n" + responseJson);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
-			JsonNode rootNode = objectMapper.readTree(responseJson);
-			JsonNode resultNode = rootNode.path("result");
+			JsonNode resultNode = objectMapper.readTree(responseJson);
 			if(resultNode.isArray()) {
 				for(JsonNode node : resultNode) {
-					ResultVo resultVo = objectMapper.treeToValue(node, ResultVo.class);
-					resultList.add(resultVo);
+					RootVo rootVo = objectMapper.treeToValue(node, RootVo.class);
+					resultList.add(rootVo);
 				}
 			}
 			
 //			// 받아온 JSON 데이터를 Java 객체로 매핑하는 코드
 //			ObjectMapper objectMapper = new ObjectMapper();
-//			ResultVo resultVo = objectMapper.readValue(responseJson, ResultVo.class);
-//
-//			// 매핑된 Java 객체를 리스트에 추가
-//			resultList.add(resultVo);
+			RootVo rootVo = objectMapper.readValue(responseJson, RootVo.class);
+
+			// 매핑된 Java 객체를 리스트에 추가
+			resultList.add(rootVo);
+			System.out.println("resultList : " + resultList.toString());
 			
 		} catch(Exception e) {
 			
@@ -82,6 +87,7 @@ public class ApiService {
 			System.out.println("error : " + e);
 			
 		} finally {
+			
 			if(reader != null) {
 				
                 reader.close();

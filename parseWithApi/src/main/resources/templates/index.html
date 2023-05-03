@@ -7,6 +7,69 @@
     <title>금리 테이블</title>
 </head>
 <body>
-    성공입니다~
+    <script>
+    
+        fetch('http://localhost:8080/table')
+        .then(response => response.json())
+        .then(data => {
+            // JSON 데이터를 파싱하여 자바스크립트 객체로 변환합니다.
+            const baseList = data[0].result.baseList;
+            const optionList = data[0].result.optionList;
+            const countMaxPage = data[0].result;
+            
+            console.log('1배열', baseList, '2배열', optionList, '과연', countMaxPage);
+    
+            // 테이블을 만듭니다.
+            const table = document.createElement('table');
+    
+            // 테이블 헤더를 만듭니다.
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            Object.keys(baseList[0]).forEach(key => {
+            const th = document.createElement('th');
+            th.textContent = key;
+            headerRow.appendChild(th);
+            });
+            Object.keys(optionList[0]).forEach(key => {
+            const th = document.createElement('th');
+            th.textContent = key;
+            headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+    
+            // 테이블 바디를 만듭니다.
+            const tbody = document.createElement('tbody');
+            baseList.forEach(rowData1 => {
+            const row = document.createElement('tr');
+            Object.values(rowData1).forEach(value => {
+                const cell = document.createElement('td');
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+            optionList.forEach(rowData2 => {
+                if (
+                rowData2.dcls_month === rowData1.dcls_month &&
+                rowData2.fin_co_no === rowData1.fin_co_no &&
+                rowData2.fin_prdt_cd === rowData1.fin_prdt_cd
+                ) {
+                Object.values(rowData2).forEach(value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+                tbody.appendChild(row);
+                }
+            });
+            });
+            table.appendChild(tbody);
+    
+            // 테이블을 body에 추가합니다.
+            document.body.appendChild(table);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    </script>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.assignment.parseWithApi.service.ApiService;
 import com.assignment.parseWithApi.vo.ResultVo;
+import com.assignment.parseWithApi.vo.RootVo;
 
 @RestController
 public class ApiController {
@@ -19,17 +20,17 @@ public class ApiController {
 	
 	
 	@GetMapping("/table")
-	public List<ResultVo> getTable() throws IOException {
+	public List<RootVo> getTable() throws IOException {
 		
-		String 				targetUrl 		=	 "http://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json";
+		String 				targetUrl 		=	 "https://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json";
 		String   			authKey 		= 	 "276dd7404eab954cd893284d19131536";
 		String				topFinGrpNo		=	 "030300";	// 저축은행
-		int					pageNo			=	  0;
+		int					pageNo			=	  1;
 		String				rqstURL			=	 targetUrl + "?auth=" + authKey + 
 												 "&topFinGrpNo=" + topFinGrpNo + 
 												 "&pageNo=" + pageNo;
 		
-		List<ResultVo> resultList = apiService.getResult(rqstURL);
+		List<RootVo> resultList = apiService.getResult(rqstURL);
 		return resultList;
 		
 	}

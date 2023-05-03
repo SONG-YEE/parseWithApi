@@ -31,6 +31,7 @@ public class ApiController {
 												 "&pageNo=" + pageNo;
 		
 		List<RootVo> resultList = apiService.getResult(rqstURL);
+		System.out.println("함수 돌았어용");
 		return resultList;
 		
 	}

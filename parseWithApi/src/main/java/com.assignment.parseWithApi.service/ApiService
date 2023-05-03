@@ -47,18 +47,11 @@ public class ApiService {
 				
 			}
 				
-//			if(conn instanceof HttpURLConnection) {
-//				System.out.println("가능");
-//			} else { System.out.println("불가능"); }
-
 			inputStream = conn.getInputStream();
             reader = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder responseBuilder = new StringBuilder();
             String line = "";
-//            String result = "";
             while(  (line = reader.readLine()) != null  ) {
-//            	result = result.concat(line);
-//            	System.out.println("result : \n" + result);
                 responseBuilder.append(line);
             }
 			String responseJson = responseBuilder.toString();
@@ -76,13 +69,12 @@ public class ApiService {
 				}
 			}
 			
-//			// 받아온 JSON 데이터를 Java 객체로 매핑하는 코드
-//			ObjectMapper objectMapper = new ObjectMapper();
+			// 받아온 JSON 데이터를 Java 객체로 매핑하는 코드
 			RootVo rootVo = objectMapper.readValue(responseJson, RootVo.class);
 
 			// 매핑된 Java 객체를 리스트에 추가
 			resultList.add(rootVo);
-			System.out.println("resultList : " + resultList.toString());
+			System.out.println("resultList : " + resultList.size());
 			
 		} catch(Exception e) {
 			

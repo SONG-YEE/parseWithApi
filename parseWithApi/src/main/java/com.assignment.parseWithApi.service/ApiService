@@ -11,15 +11,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.assignment.parseWithApi.vo.OptionListVo;
-import com.assignment.parseWithApi.vo.ResultVo;
 import com.assignment.parseWithApi.vo.RootVo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class ApiService {
-	
 	
 	public List<RootVo> getResult(String rqstURL) throws IOException {
 		
@@ -61,6 +58,7 @@ public class ApiService {
 			JsonNode resultNode = objectMapper.readTree(responseJson);
 			
 			if(resultNode.isArray()) {
+				
 				for(JsonNode node : resultNode) {
 					
 					RootVo rootVo = objectMapper.treeToValue(node, RootVo.class);
@@ -74,7 +72,6 @@ public class ApiService {
 
 			// 매핑된 Java 객체를 리스트에 추가
 			resultList.add(rootVo);
-			System.out.println("resultList : " + resultList.size());
 			
 		} catch(Exception e) {
 			

@@ -14,11 +14,11 @@ public class BaseListVo {
 	@JsonProperty("dcls_month")
     private int dclsMonth;					// 공시제출월 YYYMM
     
-//    @JsonProperty("fin_co_no")
-//    private String finCoNo;				// 금융회사 코드
+    @JsonProperty("fin_co_no")
+    private String finCoNo;					// 금융회사 코드
     
     @JsonProperty("fin_prdt_cd")
-    private int finPrdtCd;					// 금융상품 코드
+    private String finPrdtCd;				// 금융상품 코드
     
     @JsonProperty("kor_co_nm")
     private String korCoNm;					// 금융회사명
@@ -44,16 +44,16 @@ public class BaseListVo {
     @JsonProperty("etc_note")
     private String etcNote;					// 기타 유의사항
     
-//    @JsonProperty("max_limit")
-//    private String maxLimit;				// 최고한도
+    @JsonProperty("max_limit")
+    private int maxLimit;					// 최고한도
     
-//    @JsonProperty("dcls_strt_day")
-//    private String dclsStrtDay;			// 공시 시작일
+    @JsonProperty("dcls_strt_day")
+    private String dclsStrtDay;				// 공시 시작일
     
-//    @JsonProperty("dcls_end_day")
-//    private String dclsEndDay;			// 공시 종료일
+    @JsonProperty("dcls_end_day")
+    private String dclsEndDay;				// 공시 종료일
     
-//    @JsonProperty("fin_co_subm_day")
-//    private String finCoSubmDay;			// 금융회사 제출일
+    @JsonProperty("fin_co_subm_day")
+    private String finCoSubmDay;			// 금융회사 제출일
     
 }

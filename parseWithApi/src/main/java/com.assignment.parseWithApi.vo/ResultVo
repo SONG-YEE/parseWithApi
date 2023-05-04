@@ -15,22 +15,22 @@ import lombok.ToString;
 public class ResultVo {
 
 	@JsonProperty("prdt_div")
-	private String prdtDiv;						 	// ?
+	private String prdtDiv;						 		// ?
     
     @JsonProperty("total_count")
-    private int totalCount;						// 총 상품건수
+    private int totalCount;								// 총 상품건수
     
     @JsonProperty("max_page_no")
-    private int maxPageNo;						// 총 페이지 건수 (총페이지건수=총상품건수/1회조회개수)
+    private int maxPageNo;								// 총 페이지 건수 (총페이지건수=총상품건수/1회조회개수)
     
     @JsonProperty("now_page_no")
-    private int nowPageNo;						// 현재 조회 페이지 번호
+    private int nowPageNo;								// 현재 조회 페이지 번호
     
     @JsonProperty("err_cd")
-    private String errCd;							// 응답코드
+    private String errCd;								// 응답코드
     
     @JsonProperty("err_msg")
-    private String errMsg;							// 응답메시지
+    private String errMsg;								// 응답메시지
     
     @JsonProperty("baseList")
     private ArrayList<BaseListVo> baseList;				// BaseListVo

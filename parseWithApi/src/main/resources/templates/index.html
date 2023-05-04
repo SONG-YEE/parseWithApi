@@ -7,69 +7,106 @@
     <title>금리 테이블</title>
 </head>
 <body>
-    <script>
+<script>
+
+fetch('http://localhost:8080/table')
+.then(response => response.json())
+.then(data => {
+
+    const result = data[0].result;
+    const baseList = result.baseList;
+    const optionList = result.optionList;
     
-        fetch('http://localhost:8080/table')
-        .then(response => response.json())
-        .then(data => {
-            // JSON 데이터를 파싱하여 자바스크립트 객체로 변환합니다.
-            const baseList = data[0].result.baseList;
-            const optionList = data[0].result.optionList;
-            const countMaxPage = data[0].result;
-            
-            console.log('1배열', baseList, '2배열', optionList, '과연', countMaxPage);
+	const totalCount = result.total_count;                                  // 총 상품건수
+    const nowPageNo = result.now_page_no;
+    const countMaxPage = result.max_page_no;
+    const errCd = result.err_cd;                                            // 에러코드
+    const copy = [];
     
-            // 테이블을 만듭니다.
-            const table = document.createElement('table');
+
+    //-------속성명 : 테이블 컬럼명-----------//
+	const korCoNm = baseList[0].kor_co_nm;                                  // 금융회사명 : 금융회사
     
-            // 테이블 헤더를 만듭니다.
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            Object.keys(baseList[0]).forEach(key => {
-            const th = document.createElement('th');
-            th.textContent = key;
-            headerRow.appendChild(th);
-            });
-            Object.keys(optionList[0]).forEach(key => {
-            const th = document.createElement('th');
-            th.textContent = key;
-            headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-    
-            // 테이블 바디를 만듭니다.
-            const tbody = document.createElement('tbody');
-            baseList.forEach(rowData1 => {
-            const row = document.createElement('tr');
-            Object.values(rowData1).forEach(value => {
+    console.log("제발 이제는 진짜 다 나와야지 쫌..", Object.keys(korCoNm));
+
+    const finPrdtNm = result.fin_prdt_nm;                                   // 금융상품명 : 상품명
+    const rsrvTypeNm = optionList.rsrv_rate_type_nm;                        // 금리유형명 : 적립방식
+
+    const saveTrm = optionList.save_trm;                                    // 저축 기간(개월) : 저축 기간(개월)
+    const intrRate = optionList.intr_rate;                                  // 저축 금리 : 세전 이자율
+    const intrRateAfter = ( intrRate - (intrRate * 0.154) ).toFixed(2);     // 저축 금리 : 세후 이자율
+    const intrRate2 = optionList.intr_rate2                                 // 최고 우대금리 : 최고 우대금리
+
+    const spclCnd = result.spcl_cnd;                                        // 우대조건 : 우대조건
+    const joinMember = result.join_member;                                  // 가입대상 : 가입대상
+    const joinWay = result.join_way;                                        // 가입방법 : 가입방법
+    const mtrtInt = result.mtrt_int;                                        // 만기 후 이자율 : 만기 후 이자율
+    const etcNote = result.etc_note;                                        // 기타 유의사항 : 기타 유의사항
+
+
+    //-------table row별 배열-----------//
+    console.log('3번째 console.log \n 1배열', baseList, '\n 2배열', optionList, '\n 토탈카운트', totalCount,
+                ' 현재페이지', nowPageNo, '\n 총페이지', countMaxPage,
+                '\n 금융회사', korCoNm, '\n 상품명', finPrdtNm, '\n 적립방식', rsrvTypeNm);
+
+    // 테이블
+    const table = document.createElement('table');
+    1
+
+    // 테이블 헤더
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    Object.keys(baseList[0]).forEach(key => {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    });
+    Object.keys(optionList[0]).forEach(key => {
+        const th = document.createElement('th');
+        th.textContent = key;
+        headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // 테이블 바디
+    const tbody = document.createElement('tbody');
+    baseList.forEach(rowData1 => {
+        const row = document.createElement('tr');
+        Object.values(rowData1).forEach(value => {
+            const cell = document.createElement('td');
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+        optionList.forEach(rowData2 => {
+            if (
+            rowData2.dcls_month === rowData1.dcls_month &&
+            rowData2.fin_co_no === rowData1.fin_co_no &&
+            rowData2.fin_prdt_cd === rowData1.fin_prdt_cd
+            ) {
+            Object.values(rowData2).forEach(value => {
                 const cell = document.createElement('td');
                 cell.textContent = value;
                 row.appendChild(cell);
             });
-            optionList.forEach(rowData2 => {
-                if (
-                rowData2.dcls_month === rowData1.dcls_month &&
-                rowData2.fin_co_no === rowData1.fin_co_no &&
-                rowData2.fin_prdt_cd === rowData1.fin_prdt_cd
-                ) {
-                Object.values(rowData2).forEach(value => {
-                    const cell = document.createElement('td');
-                    cell.textContent = value;
-                    row.appendChild(cell);
-                });
-                tbody.appendChild(row);
-                }
-            });
-            });
-            table.appendChild(tbody);
-    
-            // 테이블을 body에 추가합니다.
-            document.body.appendChild(table);
-        })
-        .catch(error => {
-            console.error('Error:', error);
+            tbody.appendChild(row);
+            }
         });
-    </script>
+    });
+    table.appendChild(tbody);
+
+    // table 요소를 감싸는 div 요소
+    const tableWrapper = document.createElement('div');
+    tableWrapper.setAttribute('id', 'tableWrapper');
+    tableWrapper.appendChild(table);
+
+    // 테이블을 body에 추가
+    document.body.appendChild(tableWrapper);
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+
+</script>
 </body>
 </html>

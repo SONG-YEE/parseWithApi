@@ -5,27 +5,29 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.assignment.parseWithApi.service.ApiService;
-import com.assignment.parseWithApi.vo.ResultVo;
 import com.assignment.parseWithApi.vo.RootVo;
 
 @RestController
 public class ApiController {
 	
 	
+	// pageNo 쿼리파람으로 만들어서 pageno가 n일때 now page 일치하는 값을 보여준다...느낌으로 짜보자
+	
 	@Autowired
 	private ApiService apiService;
 	
 	
 	@GetMapping("/table")
-	public List<RootVo> getTable() throws IOException {
+	public List<RootVo> getTable(@RequestParam(required = false, defaultValue = "1") int pageNo) throws IOException {
 		
 		String 				targetUrl 		=	 "https://finlife.fss.or.kr/finlifeapi/savingProductsSearch.json";
 		String   			authKey 		= 	 "276dd7404eab954cd893284d19131536";
 		String				topFinGrpNo		=	 "030300";	// 저축은행
-		int					pageNo			=	  1;
+//		int					pageNo			=	  1;
 		String				rqstURL			=	 targetUrl + "?auth=" + authKey + 
 												 "&topFinGrpNo=" + topFinGrpNo + 
 												 "&pageNo=" + pageNo;

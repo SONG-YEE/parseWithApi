@@ -9,9 +9,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import com.assignment.parseWithApi.vo.RootVo;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,12 +53,14 @@ public class ApiService {
             while(  (line = reader.readLine()) != null  ) {
                 responseBuilder.append(line);
             }
+            
 			String responseJson = responseBuilder.toString();
 			System.out.println("responseJson : \n" + responseJson);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonNode resultNode = objectMapper.readTree(responseJson);
-			
+			int PageNo = resultNode.get("result").get("now_page_no").asInt();
+			System.out.println(PageNo);
 			if(resultNode.isArray()) {
 				
 				for(JsonNode node : resultNode) {
@@ -72,6 +76,7 @@ public class ApiService {
 
 			// 매핑된 Java 객체를 리스트에 추가
 			resultList.add(rootVo);
+			
 			
 		} catch(Exception e) {
 			

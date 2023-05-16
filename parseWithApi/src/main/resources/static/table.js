@@ -27,7 +27,7 @@ function fetchData(pageNo) {
 }
 
 
-//--------페이지네이션 번호와 일치하는 페이지만 불러오기----------//
+// 페이지네이션 번호와 일치하는 페이지만
 function renderTable(data, pageNo) {
     const tbody = document.getElementById("tbody");
     tbody.innerHTML = "";
@@ -59,7 +59,7 @@ function renderTable(data, pageNo) {
                         <td>${row.matchingList.join_member}</td>
                         <td>${row.intr_rate_type_nm}</td>
                         <td>
-                            <button class="btn-details">상세</button>
+                            <a href="#none" class="btn-details">상세</a>
                             <div class="details-content" style="display: none;">
                                 <dl>
                                     <dt>우대 조건</dt>
@@ -91,6 +91,7 @@ pagination.innerHTML = "";
     prevButton.innerHTML = `<a class="page-link" href="#" tabindex="-1">◀</a>`;
     if (pageNo === 1) prevButton.classList.add("disabled");
     prevButton.addEventListener("click", (e) => {
+		window.scrollTo(0,0);
         e.preventDefault();
         if (pageNo > 1) {
             pageNo--;
@@ -105,6 +106,7 @@ pagination.innerHTML = "";
         pageButton.innerHTML = `<a class="page-link" href="#">${i}</a>`;
         if (i === pageNo) pageButton.classList.add("active");
         pageButton.addEventListener("click", (e) => {
+			window.scrollTo(0,0);
             e.preventDefault();
             pageNo = i;
             console.log('for문 pageNo', pageNo);
@@ -118,32 +120,50 @@ pagination.innerHTML = "";
     nextButton.innerHTML = `<a class="page-link" href="#">▶</a>`;
     if (pageNo === totalPage) nextButton.classList.add("disabled");
     nextButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    if (pageNo < totalPage) {
-        pageNo++;
-        fetchData(pageNo);
-    }
+		window.scrollTo(0,0);
+	    e.preventDefault();
+	    if (pageNo < totalPage) {
+	        pageNo++;
+	        fetchData(pageNo);
+    	}
     });
     pagination.appendChild(nextButton);
 
 
-    //-----------상세정보 버튼---------------//
-    const btnDetailsList = document.querySelectorAll('.btn-details');
-    //const btnDetails = document.querySelector('.btn-details');
-    //const detailsContent = document.querySelector('.details-content');
-
-    btnDetailsList.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const detailsContent = btn.nextElementSibling;
-
-            if (detailsContent.style.display === 'none') {
-                detailsContent.style.display = 'block';
-                btn.textContent = '접기';
-            } else {
-                detailsContent.style.display = 'none';
-                btn.textContent = '상세';
-            }
-        });
-    });
+    // 상세정보 버튼
+	const btnDetailsList = document.querySelectorAll('.btn-details');
+	
+	btnDetailsList.forEach(btn => {
+	    btn.addEventListener('click', () => {
+	        const detailsContent = btn.parentElement.querySelector('.details-content');
+			console.log('이벤트리스너 detailsContent', detailsContent);
+	        
+	        if (detailsContent === null) {
+				console.log('if문 null 일 때 detailsContent', detailsContent);
+				detailsContent = document.querySelector('.details-content');
+				console.log('if문 null 일 때 detailsContent 222', detailsContent);
+				detailsContent.style.display = 'none';
+				btn.textContent = '상세';
+				console.log('if문 null 일 때 detailsContent 333', detailsContent);
+			} else if (detailsContent.style.display === 'none') {
+	            detailsContent.style.display = '';
+	            btn.textContent = '접기';
+	            
+	            const tr = document.createElement("tr");
+	            const td = document.createElement("td");
+	            
+	            td.setAttribute("colspan", "10");
+	            td.appendChild(detailsContent);
+	            tr.appendChild(td);
+	            btn.parentElement.parentElement.insertAdjacentElement('afterend', tr);
+	            
+	            console.log('for문 detailsContent', detailsContent);
+	        } else {
+	            detailsContent.style.display = 'none';
+	            btn.textContent = '상세';
+	        }
+	        
+	    });
+	});
     
 }

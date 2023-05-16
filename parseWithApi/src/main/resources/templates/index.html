@@ -12,14 +12,24 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <style>
-		#table {
-			width: 250;
-			height: 100;
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap');
+		body {
+		    color: #333;
+		    line-height: 1.5;
+		    font-family: 'Noto Sans KR', sans-serif;
+		    letter-spacing: -0.015rem;
+		    word-break: keep-all;
+		    font-weight: 400;
+		    font-size: 25;
 		}
-		
+        
         .table-container {
             text-align: center;
             width: 100%;
+            padding-left: 10%;
+            padding-right: 10%;
+            padding-bottom: 3%;
+            padding-top: 5%;
             display: flex;
             justify-content: center;
         }
@@ -33,18 +43,50 @@
 		}        
 
         dt {
-            float:left;
-            clear:left;
+            float: left;
+            clear: left;
+            padding: 1%;
         }
         
         dd {
-            float:left;
+            float: left;
+            padding: 1%;
         }
+
+        table {
+            border-collapse: collapse;
+            border-spacing: 30px;
+            border-top: 2px solid #000;
+        }
+        
+        th, td {
+			border: 1px solid #dadada;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 30px;
+            padding-right: 30px;
+		}
+		
+		th {
+			background-color: #d2dcf191;
+			font-size: large;
+		}
+		
+		table th:first-child,
+		table td:first-child {
+			border-left: 0;
+		}
+		
+		table th:last-child,
+		table td:last-child {
+			border-right: 0;
+		}
+		
     </style>
 </head>
 <body>
     <div class="table-container">
-        <table id="table" border="1">
+        <table id="table">
             <thead>
                 <tr>
                     <th>금융회사명</th>
@@ -58,38 +100,30 @@
                     <th>이자계산방식</th>
                     <th>상세정보</th>
                 </tr>
-        </thead>
-        <tbody id="tbody">
-
-            <tr>
-                <td colspan="10">
-                    <div class="details">
-                        <button class="btn-details">상세</button>
-                        <td class="details-content" style="display: none;">
-                            <dl>
-                                <dt>우대 조건</dt>
-                                <dd></dd>
-                                <dt>가입 대상</dt>
-                                <dd></dd>
-                            </dl>
-                            <dl>
-                                <dt>가입 방법</dt>
-                                <dd></dd>
-                                <dt>만기 후 이자율</dt>
-                                <dd></dd>
-                                <dt>기타 유의사항</dt>
-                                <dd></dd>
-                            </dl>
-                        </td>
+        	</thead>
+	        <tbody id="tbody">
+				<td>
+                  	<a href="#none" class="btn-details">상세</a>
+                	<div class="details-content" style="display: none;">
+                    	<dl>
+                        	<dt>우대 조건</dt>
+                        	<dd></dd>
+                        	<dt>가입 대상</dt>
+                        	<dd></dd>
+                        </dl>
+                        
+                        <dl>
+                        	<dt>가입 방법</dt>
+                        	<dd></dd>
+                        	<dt>만기 후 이자율</dt>
+                        	<dd></dd>
+                        	<dt>기타 유의사항</dt>
+                        	<dd></dd>
+                        </dl>
                     </div>
                 </td>
-            </tr>
-
-        </tbody>
-        <tfoot>
-            
-        </tfoot>
-          </table>
+	        </tbody>
+        </table>
     </div>
     <nav aria-label="paginationContainer">
         <ul class="pagination">

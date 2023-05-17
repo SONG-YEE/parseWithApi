@@ -136,32 +136,38 @@ pagination.innerHTML = "";
 	btnDetailsList.forEach(btn => {
 	    btn.addEventListener('click', () => {
 	        const detailsContent = btn.parentElement.querySelector('.details-content');
-			console.log('이벤트리스너 detailsContent', detailsContent);
-	        
-	        if (detailsContent === null) {
-				console.log('if문 null 일 때 detailsContent', detailsContent);
-				detailsContent = document.querySelector('.details-content');
-				console.log('if문 null 일 때 detailsContent 222', detailsContent);
-				detailsContent.style.display = 'none';
-				btn.textContent = '상세';
-				console.log('if문 null 일 때 detailsContent 333', detailsContent);
-			} else if (detailsContent.style.display === 'none') {
-	            detailsContent.style.display = '';
-	            btn.textContent = '접기';
-	            
-	            const tr = document.createElement("tr");
-	            const td = document.createElement("td");
-	            
-	            td.setAttribute("colspan", "10");
-	            td.appendChild(detailsContent);
-	            tr.appendChild(td);
-	            btn.parentElement.parentElement.insertAdjacentElement('afterend', tr);
-	            
-	            console.log('for문 detailsContent', detailsContent);
-	        } else {
-	            detailsContent.style.display = 'none';
-	            btn.textContent = '상세';
-	        }
+
+            if (detailsContent !== null) {
+				
+                if (btn.textContent === '상세') {
+                    btn.textContent = '접기';
+                    detailsContent.style.display = '';
+                    
+                    const tr = document.createElement("tr");
+                    const td = document.createElement("td");
+                    
+                    td.setAttribute("colspan", "10");
+                    td.appendChild(detailsContent);
+                    tr.appendChild(td);
+                    btn.parentElement.parentElement.insertAdjacentElement('afterend', tr);
+                }
+
+            } else if (detailsContent === null) {
+				
+                if (btn.textContent === '접기') {
+                    btn.textContent = '상세';
+                    const removeNode = btn.parentElement.parentElement.nextElementSibling;
+                    console.log('removeNode 찍어보기', removeNode);
+                    removeNode.style.display = 'none';
+                    
+                } else if (btn.textContent === '상세') {
+                    btn.textContent = '접기';
+                    const viewNode = btn.parentElement.parentElement.nextElementSibling;
+                    console.log('viewNode 찍어보기', viewNode);
+                    viewNode.style.display = '';
+                    
+                }
+            }
 	        
 	    });
 	});

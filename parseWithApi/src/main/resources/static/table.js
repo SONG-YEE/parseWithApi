@@ -134,9 +134,9 @@ pagination.innerHTML = "";
 	const btnDetailsList = document.querySelectorAll('.btn-details');
 	
 	btnDetailsList.forEach(btn => {
-	    btn.addEventListener('click', () => {
+	    btn.addEventListener('click', (e) => {
 	        const detailsContent = btn.parentElement.querySelector('.details-content');
-
+	        e.preventDefault();
             if (detailsContent !== null) {
 				
                 if (btn.textContent === '상세') {
